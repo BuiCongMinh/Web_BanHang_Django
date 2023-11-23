@@ -1,0 +1,96 @@
+{% extends "home/base.html" %}
+{% block content %}
+
+    <div class="row">
+        <div class="col">
+            <!--Start search-->
+            <form action=""  method= 'GET' >
+                {% csrf_token %}
+                <input type='text' placehoder = 'keyword' name = "keyword"  value="{{keyword}}"/>
+                <input type='submit' value = 'search' />
+            </form>
+            <!--End search-->
+        </div>
+        <div class="col d-flex justify-content-end">
+            <!--Start Sort-->
+            <div class="dropdown mx-2" >
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?sort=-created_at {% for k, v in request.GET.items %}
+                        {% if k != 'sort' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">Latest</a></li>
+                    <li><a class="dropdown-item" href="?sort=created_at {% for k, v in request.GET.items %}
+                        {% if k != 'sort' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">Oldest</a></li>
+                    <li><a class="dropdown-item" href="?sort=title {% for k, v in request.GET.items %}
+                        {% if k != 'sort' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">Tieu de</a></li>
+                </ul>
+            </div>
+            <!--End Sort-->
+            <!--Start Limit-->
+            <div class="dropdown mx-2" >
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Limit</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?limit=3 {% for k, v in request.GET.items %}
+                        {% if k != 'limit' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">3</a></li>
+                    <li><a class="dropdown-item" href="?limit=6 {% for k, v in request.GET.items %}
+                        {% if k != 'limit' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">6</a></li>
+                    <li><a class="dropdown-item" href="?limit=9 {% for k, v in request.GET.items %}
+                        {% if k != 'limit' %}
+                            &{{ k }} = {{ v }}
+                        {% endif %}
+                    {% endfor %}">9</a></li>
+                </ul>
+            </div>
+            <!--End Limit-->
+        </div>
+
+
+    {% for post in post_list  %}
+        <h1><a href ="{% url 'blog:detail' post.id %}">{{post.title}}</a></h1>
+        <p>{{post.summary}}</p>
+    {% endfor %}
+
+    <!-- Start Pageningation -->
+    <div class="pagination">
+        <span class = "step-links">
+            {% if post_list.has_previous %}
+                <a href= "?page={{ post_list.previous_page_number }}
+                {% for k, v in request.GET.items %}
+                    {% if k != 'page' %}
+                        &{{ k }} = {{ v }}
+                    {% endif %}
+                {% endfor %}"> Previous </a>
+            {% endif %}
+
+            <span class="current">
+                {{post_list.number}} / {{post_list.paginator.num_pages}}
+            </span>
+
+            {% if post_list.has_next %}
+                <a href="?page={{ post_list.next_page_number}}
+                {% for k, v in request.GET.items %}
+                    {% if k != 'page' %}
+                        &{{ k }} = {{ v }}
+                    {% endif %}
+                {% endfor %}
+                " > Next </a> 
+            {% endif %}
+        </span>
+    </div>
+    <!-- End Pageningation -->
+
+{% endblock content %}

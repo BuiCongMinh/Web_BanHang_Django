@@ -1,0 +1,9 @@
+{% extends "home/base.html" %}
+{% block content %}
+    <a type="button" class="btn btn-success" href=" {% url 'blog:list' %} ">back to list</a>
+
+    <h1>{{post.title}}</h1>
+    <h3>{{post.summary}}</h3>
+    <h4>{{post.content}}</h4> 
+
+{% endblock content %}

@@ -1,0 +1,6 @@
+[client]
+database = mystore3
+user = root
+password = 123456
+post = 3306
+default-character-set = utf8
