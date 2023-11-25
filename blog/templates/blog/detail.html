@@ -2,8 +2,14 @@
 {% block content %}
     <a type="button" class="btn btn-success" href=" {% url 'blog:list' %} ">back to list</a>
 
+    <h1>Post Detail Page</h1>
+    <hr/>
     <h1>{{post.title}}</h1>
     <h3>{{post.summary}}</h3>
     <h4>{{post.content}}</h4> 
+
+    <!-- Edit Start -->
+    <a class = "btn btn-primary" href="{% url 'blog:edit' post.id %}" role="button">Thay đổi bai viet</a>
+    <!-- Edit End -->
 
 {% endblock content %}

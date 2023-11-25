@@ -1,7 +1,7 @@
-from django.shortcuts import render , HttpResponse, get_object_or_404
+from django.shortcuts import render , HttpResponse, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
 from .models import PostModel
+from .forms import PostForm, PostModelForm
 
 def main(req):
     return render(req,'main.html')
@@ -52,10 +52,40 @@ def detail(req,id):
     # post = PostModel.objects.get(pk=id)
     # post = PostModel.objects.filter(pk=id).values()[0]
     post = get_object_or_404(PostModel,pk=id)
-    
-
     context = {
         "post":post,
     }
     
     return render(req,'blog/detail.html', context)
+
+def add(request):
+    # form = PostForm()
+    form = PostModelForm()
+    if request.method == "POST":
+        # form = PostForm(request.POST)
+        form = PostModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("blog:list")
+    
+    context = {
+        "form" : form
+    }
+    return render(request,"blog/add.html", context)
+
+
+def edit(request, id):
+    model = PostModel.objects.get(pk=id)
+    form = PostModelForm(instance=model)    
+
+    if request.method == "POST":
+        form = PostModelForm(request.POST, instance=model)
+        if form.is_valid():
+            form.save()
+            return redirect("blog:detail",model.id)
+
+    context = {
+        "form": form
+    }
+    return render(request,"blog/edit.html", context)
+

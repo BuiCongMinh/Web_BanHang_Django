@@ -4,7 +4,7 @@ from django.db import models
 class PostModel(models.Model):
     title = models.CharField(max_length=100)
     summary = models.CharField(max_length= 500, null=True)
-    context = models.TextField(null=True)
+    content = models.TextField(null=True)
     status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
